@@ -6,7 +6,13 @@
 This application allows users to upload photos and request both the original raw photo as well as different sizes of the photo back.
 
 # Current Status
-Tues October 24 12:34 - rebuilding project to try to simplify server/backed
+Tues October 24 2:34 - Rebuilt project is much simpler, but still can't get server to properly query database for a GET or POST request. 
+
+I suspect my understanding of how to serve the URL of photo images as files is incorrect. 
+
+Total time spent on original attempt: approx 5 hours.
+
+Total time spent on revised attempt: approx 4 hours. 
 
 # User Story
 As a photojournalist, I want to be able to upload my large format  images to a database for others to access. I also want others who want to use my images to be able to choose what dimensions they get the photo downloaded in and in what format (JPG, PNG, etc), as well as get the original raw image.
@@ -32,9 +38,10 @@ As a photojournalist, I want to be able to upload my large format  images to a d
     - Body-parser
     - GraphicsMagick
     - FS (File Server)
-    - Firebase
     - GRPC
     - Path
+    - PostgreSQL
+    - SuperAgent
 
 # Resources
 
