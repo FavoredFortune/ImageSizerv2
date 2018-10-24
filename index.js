@@ -9,6 +9,7 @@ const gm = require('gm');
 const fs = require('fs');
 const path = require ('path');
 const pg = require('pg');
+const superagent = require('superagent');
 
 
 //application setup
@@ -16,20 +17,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 //database set up
+//note nixed firebase - can't get it working
+//switched to postgresSQL local database
 const DATABASE_URL = 'postgres://localhost:5432/raw_image';
 
-// Initialize Firebase
-// var config = {
-//   apiKey: 'AIzaSyBb8tDj-oO_fBoGX1KP0MTDO4GRcv5KJm4',
-//   authDomain: 'photoapp-c643e.firebaseapp.com',
-//   databaseURL: 'https://photoapp-c643e.firebaseio.com',
-//   projectId: 'photoapp-c643e',
-//   storageBucket: 'photoapp-c643e.appspot.com',
-//   messagingSenderId: '170890289058'
-// };
-// firebase.initializeApp(config);
+const client = new pg.Client(DATABASE_URL);
+client.connect();
+client.on('error',error => console.error(error));
 
-//for access to cross origin resource sharing
 app.use(cors());
 
 //test connection
@@ -42,30 +37,50 @@ app.listen(PORT, () =>{
 });
 
 //request original image
-app.get(`${DATABASE_URL}/{rawImagePath}/rawImageName`, (request,response)=>{
-  gm(`${DATABASE_URL}/{rawImagePath}/rawImageName`)
-    .write('./tmp.jpg', (error)=>{
+app.get(`${DATABASE_URL}/:rawFileName/:rawFilePath`, (request,response)=>{
+  var {rawFileName, rawFilePath} = request.params;
+  var file = client.query(`SELECT rawImageName FROM raw_image WHERE rawFileName='fileRawName' AND rawFilePath='fileRawPath';`);
+  gm(file)
+    .write(`./${rawFileName}.jpg`, (error)=>{
       if(error){
         console.log(error);
       } else{
-        response.sendFile('./tmp.jpg');
+        response.sendFile(`./${rawFileName}.jpg`);
       }
     });
-  //deletes temporary file downloaded
-  fs.unlinkSync('./tmp.jpg');
 });
 
+//request resize or crop image
+app.get(`${DATABASE_URL}/:rawFileName/:rawFilePath/:width/:height/:format`, (request,response)=>{
+  var {rawFileName, rawFilePath,width, height, format} = request.params;
+  var file = client.query(`SELECT rawImageName FROM raw_image WHERE rawFileName='fileRawName' AND rawFilePath='fileRawPath';`);
 
-//request resize image
-app.get(`${DATABASE_URL}/{rawImagePath}/rawImageName`, (request,response)=>{
-  gm(`${DATABASE_URL}/{rawImagePath}/rawImageName`)
-    .write('./tmp.jpg', (error)=>{
-      if(error){
-        console.log(error);
-      } else{
-        response.sendFile('./tmp.jpg');
-      }
-    });
-  //deletes temporary file downloaded
-  fs.unlinkSync('./tmp.jpg');
+  //in case value isn't passed in
+  width = width || null;
+  height = height || null;
+  format = format || 'JPG';
+
+  //logic cases for different sizes requests to help avoid distortion
+  if(width/height < file.width){
+    gm(file)
+      .resize(width,height)
+      .write(`./${rawFileName}_${width}_${height}.${format}`, (error)=>{
+        if(error){
+          console.log(error);
+        } else{
+          response.sendFile(`./${rawFileName}_${width}_${height}.${format}`);
+        }
+      });
+  } else{
+    gm(file)
+      //crops from upper left corner as standard
+      .crop(width,height, 0,0)
+      .write(`./${rawFileName}_${width}_${height}.${format}`, (error)=>{
+        if(error){
+          console.log(error);
+        } else {
+          response.sendFile(`./${rawFileName}_${width}_${height}.${format}`);
+        }
+      });
+  }
 });
