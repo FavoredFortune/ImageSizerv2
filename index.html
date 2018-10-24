@@ -52,7 +52,7 @@
               <input id="rawFilePath" type="text" placeholder="file path"/>
           </label> 
           <br>
-        <button type="submit" href="/">Submit</button>
+        <button type="submit" href="/api/v1/raw_image/">Submit</button>
         <br>
       </form>
     </section>
@@ -81,7 +81,7 @@
     <label for="format"> File format of image
         <input id="text" type="text" placeholder="jpg, png, tiff, "/>
       </label>
-    <button type="submit" href="/">Submit</button>
+    <button type="submit" href="/api/v1/raw_image/">Submit</button>
     <br>
   </form>
 </section>
@@ -97,7 +97,7 @@
             <input id="rawFileName" type="file" placeholder="upload photo"/>
         </label>  
         <br>  
-      <button type="submit" href="/">Submit</button>
+      <button type="submit" href="/api/v1/newImage">Submit</button>
     </form>
   </section>
   
@@ -107,23 +107,12 @@
   
 </body>
 
-<!-- provide access to firebase database for front-end user interacton -->
-<script src="https://www.gstatic.com/firebasejs/5.5.4/firebaseapp.js"></script>
-
 <!-- Library CDN - jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <!-- Library CDN - Handlebars -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script> 
 
-<!-- Library CDN Page  -->
-  <script src="https://cdn.rawgit.com/visionmedia/page.js/master/page.js"></script>
-
 <!-- Modesl views and controller -->
-<script src="models/photos.js"></script>
-<script src="views/errorView.js"></script>
-<script src="views/requestView.js"></script>
-<script src="views/resultsUploadView.js"></script>
-<script src="views/resultsDownloadView.js"></script>
-<script src="controller/routes.js"></script>
+
 </html>

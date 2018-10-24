@@ -11,13 +11,12 @@ const path = require ('path');
 const pg = require('pg');
 const superagent = require('superagent');
 
-
 //application setup
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 //database set up
-//note nixed firebase - can't get it working
+//note: nixed firebase - can't get it working
 //switched to postgresSQL local database
 const DATABASE_URL = 'postgres://localhost:5432/raw_image';
 
@@ -37,7 +36,7 @@ app.listen(PORT, () =>{
 });
 
 //request original image
-app.get(`${DATABASE_URL}/:rawFileName/:rawFilePath`, (request,response)=>{
+app.get(`api/v1/raw_image/:rawFileName/:rawFilePath`, (request,response)=>{
   var {rawFileName, rawFilePath} = request.params;
   var file = client.query(`SELECT rawImageName FROM raw_image WHERE rawFileName='fileRawName' AND rawFilePath='fileRawPath';`);
   gm(file)
@@ -51,7 +50,7 @@ app.get(`${DATABASE_URL}/:rawFileName/:rawFilePath`, (request,response)=>{
 });
 
 //request resize or crop image
-app.get(`${DATABASE_URL}/:rawFileName/:rawFilePath/:width/:height/:format`, (request,response)=>{
+app.get(`api/v1/raw_image/:rawFileName/:rawFilePath/:width/:height/:format`, (request,response)=>{
   var {rawFileName, rawFilePath,width, height, format} = request.params;
   var file = client.query(`SELECT rawImageName FROM raw_image WHERE rawFileName='fileRawName' AND rawFilePath='fileRawPath';`);
 
@@ -83,4 +82,13 @@ app.get(`${DATABASE_URL}/:rawFileName/:rawFilePath/:width/:height/:format`, (req
         }
       });
   }
+});
+
+//add raw photo image
+app.post(`api/v1/newImage`, bodyparser, (response,request) =>{
+  client.query(`INSERT INTO raw_image(rawImageName, rawFilePath)VALUES($1,$2);`,
+    [request.body.rawFileName,
+      request.body.rawFilePath])
+    .then(()=>response.send('File Uploaded'))
+    .catch(console.errror);
 });
