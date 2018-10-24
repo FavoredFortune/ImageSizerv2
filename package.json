@@ -16,11 +16,13 @@
   },
   "homepage": "https://github.com/FavoredFortune/ImageSizerv2#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
     "express": "^4.16.4",
     "graphicsmagick": "0.0.1",
     "https": "^1.0.0",
     "node": "^10.12.0"
   },
   "devDependencies": {},
-  "description": ""
+  "description": "# Sooz (Suzanne) Richman - FavoredFortune"
 }
