@@ -5,9 +5,10 @@ const express = require ('express');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const https = require ('https');
-const gm = require('graphicsmagick');
+const gm = require('gm');
 const fs = require('fs');
-const firebase = require('firebase');
+const path = require ('path');
+const pg = require('pg');
 
 
 //application setup
@@ -15,25 +16,25 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 //database set up
-const DATABASE_URL = 'https://console.firebase.google.com/u/1/project/photoapp-c643e/database/photoapp-c643e/data';
+const DATABASE_URL = 'postgres://localhost:5432/raw_image';
 
 // Initialize Firebase
-var config = {
-  apiKey: 'AIzaSyBb8tDj-oO_fBoGX1KP0MTDO4GRcv5KJm4',
-  authDomain: 'photoapp-c643e.firebaseapp.com',
-  databaseURL: 'https://photoapp-c643e.firebaseio.com',
-  projectId: 'photoapp-c643e',
-  storageBucket: 'photoapp-c643e.appspot.com',
-  messagingSenderId: '170890289058'
-};
-firebase.initializeApp(config);
+// var config = {
+//   apiKey: 'AIzaSyBb8tDj-oO_fBoGX1KP0MTDO4GRcv5KJm4',
+//   authDomain: 'photoapp-c643e.firebaseapp.com',
+//   databaseURL: 'https://photoapp-c643e.firebaseio.com',
+//   projectId: 'photoapp-c643e',
+//   storageBucket: 'photoapp-c643e.appspot.com',
+//   messagingSenderId: '170890289058'
+// };
+// firebase.initializeApp(config);
 
 //for access to cross origin resource sharing
 app.use(cors());
 
 //test connection
-app.get('/home', (request,response) => {
-  response.send('Anyone home?');
+app.get('/', (request,response) => {
+  response.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.listen(PORT, () =>{

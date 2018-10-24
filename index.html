@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- default for viewing mobile-first -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Image Sizer</title>
+
+  <!-- Links to stylesheets -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- This is the template for error messages -->
+  <script id="error-template" type="text/x-handlebars-template">
+  <p>Hmm. That page doesn't seem to exist. Please try again.</p>
+  <p>{{status}}: {{statusText}}</p>
+  <p>Or that photo at {{filePath}} doesn't appear to be in storage at this time, please check on the filePath and try your request again.</p>
+  </script> 
+
+  <!-- this is the results template for photo download -->
+  <script id="results-download-template" type="text/x-handlebars-template">
+    <h1 id="fileName">Your photo, {{rawImageName}}, has been downloaded.</h2>
+      <img src="DATABASE_URL/{{rawImagePath}}">
+      <p src="./tmp.jpg"></p>
+  </script>
+
+  <!-- this is the results template for after photo is uploaded -->
+  <script id="results-upload-template" type="text/x-handlebars-template">
+    <h1 id="fileName">Your photo, {{rawImageName}}, has been uploaded.</h2>
+  </script>
+  
+</head>
+<body>
+  <h1>Welcome to Image Sizer!</h1>
+  <br>
+  <!-- showing error message when needed for graceful error -->
+  <section class="error-view tab-content"></section>
+
+   <!-- raw photo request form -->
+   <section class="download tab-content">
+      <p>Are you looking to download a raw photo file? Please use the form below.</p>
+      <form id="downloadRawPhoto">  
+        <legend>Raw Photo Download Form</legend>  
+        <br>  
+          <label for="rawFileName"> File Name 
+              <input id="rawFileName" type="text" placeholder="file"/>
+          </label>  
+          <br>  
+          <label for="rawFilePath"> URL of photo to download
+              <input id="rawFilePath" type="text" placeholder="file path"/>
+          </label> 
+          <br>
+        <button type="submit" href="/">Submit</button>
+        <br>
+      </form>
+    </section>
+  <!-- Resized/Cropped photo request form -->
+   <section class="download sized tab-content">
+    <p>Are you looking to download a special size of a photo file? Please use the form below.</p>
+    <form id="downloadSizedPhoto"> 
+        <legend>Sized Photo Download Form</legend>  
+        <br>  
+          <label for="rawFileName"> File Name 
+              <input id="rawFileName" type="text" placeholder="file"/>
+          </label>  
+          <br>  
+          <label for="rawFilePath"> URL of photo to download
+              <input id="rawFilePath" type="text" placeholder="file path"/>
+          </label> 
+          <br>
+      <label for="height"> Height of image to be downloaded
+        <input id="height" type="number" placeholder="image height in pixels"/>
+    </label>  
+    <br> 
+    <label for="width"> Width of image to be downloaded
+      <input id="width" type="number" placeholder="image width in pixels"/>
+    </label>  
+    <br> 
+  <button type="submit" href="/">Submit</button>
+  <br>
+  </form>
+</section>
+
+<!-- photo upload form -->
+<section class="upload tab-content">
+    <p>Are you a photojournalist looking to upload your photo for others to use? Please use the upload form below.</p>
+    <form id="uploadPhoto">         
+      <legend>Photo Upload Form</legend>  
+      <br>   
+        <br>  
+        <label for="rawFileName"> Choose file to upload
+            <input id="rawFileName" type="file" placeholder="upload photo"/>
+        </label>  
+        <br>  
+      <button type="submit" href="/">Submit</button>
+    </form>
+  </section>
+  
+  <!-- results showing photo upload location in storage/db -->
+  <section class="results tab-content"></section>
+
+  
+</body>
+
+<!-- provide access to firebase database for front-end user interacton -->
+<script src="https://www.gstatic.com/firebasejs/5.5.4/firebaseapp.js"></script>
+
+<!-- Library CDN - jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Library CDN - Handlebars -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script> 
+
+<!-- Library CDN Page  -->
+  <script src="https://cdn.rawgit.com/visionmedia/page.js/master/page.js"></script>
+
+<!-- Modesl views and controller -->
+<script src="models/photos.js"></script>
+<script src="views/errorView.js"></script>
+<script src="views/requestView.js"></script>
+<script src="views/resultsUploadView.js"></script>
+<script src="views/resultsDownloadView.js"></script>
+<script src="controller/routes.js"></script>
+</html>
