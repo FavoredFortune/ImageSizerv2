@@ -1,0 +1,26 @@
+{
+  "name": "imagesizerv2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FavoredFortune/ImageSizerv2.git"
+  },
+  "author": "Suzanne Richman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FavoredFortune/ImageSizerv2/issues"
+  },
+  "homepage": "https://github.com/FavoredFortune/ImageSizerv2#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "graphicsmagick": "0.0.1",
+    "https": "^1.0.0",
+    "node": "^10.12.0"
+  },
+  "devDependencies": {},
+  "description": ""
+}
